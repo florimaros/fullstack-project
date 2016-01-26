@@ -45,6 +45,16 @@ function addItemsToDom(response) {
 function createDomItem(item) {
 	var newItem = document.createElement('p');
 	newItem.setAttribute('id', item["id"])
+	newItem.addEventListener("click", function ()	{
+		var request = new XMLHttpRequest();
+		request.open("delete", 'http://localhost:3000/meals/'+ item["id"]);
+		request.send();
+		request.onreadystatechange = function()	{
+			if (request.readyState === 4)	{
+				console.log(request.response);
+			}
+		}
+	})
 
 //	var removeSpan = createRemoveSpan(item["id"]);
 	var textSpan = document.createElement("span")

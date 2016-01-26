@@ -18,9 +18,14 @@ function addItem(attributes, callback) {
 }
 
 function removeItem(id, callback) {
-  connection.query('DELETE FROM todo WHERE todo_id= ?', id, function(err, result) {
+  connection.query('DELETE FROM meals WHERE id= ?', id, function(err, result) {
     if (err) throw err;
-    callback(id);
+    if (result.affectedRows===1) {
+      return callback({status: "ok" })
+    }
+    else if (result.affectedRows===0) {
+      return callback({status: "not exists"})
+    }
   });
 }
 
@@ -47,7 +52,7 @@ function setCompleted(id, callback){
 
 module.exports = {
   add: addItem,
-  remove: removeItem,
+  delete: removeItem,
   all: allItems,
   complete: setCompleted
 };
