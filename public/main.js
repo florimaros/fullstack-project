@@ -4,11 +4,13 @@ var meal = document.querySelector("#meal")
 var calories = document.querySelector("#calories");
 var date = document.querySelector("#date");
 var button = document.querySelector("#post_item");
+var button2 = document.querySelector("#filter_meals");
 var container = document.querySelector("#calorie_numbers")
+var container2 = document.querySelector("#sum_calories")
 
 //var url = 'http://localhost:3000/todos';
 var postButton = document.querySelector('#post-item');
-
+var filterInput = document.querySelector("#filter");
 button.addEventListener('click', function() {
 	if(meal.value !== '') {
 		var request = new XMLHttpRequest();
@@ -65,44 +67,22 @@ function createDomItem(item) {
 	container.appendChild(newItem);
 }
 
+button2.addEventListener("click", function()	{
+	var request = new XMLHttpRequest();
+	request.open("get", 'http://localhost:3000/meals/');
+	request.send();
+	request.onreadystatechange = function()	{
+		if(request.readyState === 4) {
+			container.innerText = ""
+			var json = JSON.parse(request.response);
+			for (var i = 0; i<json.length; i++ )	{
+				if (json[i].date === filterInput.value)	{
+					createDomItem(json[i]);
+				}
+			}
+		}
+	}
+})
+
+
 getAllItems()
-/*function createRemoveSpan(id) {
-	var removeSpan = document.createElement('span');
-	removeSpan.innerText = '[x] ';
-	removeSpan.addEventListener('click', function() {
-		var request = new XMLHttpRequest();
-		request.open('DELETE', 'http://localhost:3000/todos/' + id);
-		request.send();
-		request.onreadystatechange = function() {
-			if (request.readyState === 4) {
-				removeItemFromDomById(id);
-			}
-		}
-	});
-	return removeSpan;
-}
-
-function createTextSpan(id, text) {
-	var textSpan = document.createElement('span');
-	textSpan.classList.add('text')
-	textSpan.innerText = text;
-	textSpan.addEventListener('click', function() {
-		var request = new XMLHttpRequest();
-		request.open('PUT', 'http://localhost:3000/todos/' + id);
-		request.send();
-		request.onreadystatechange = function() {
-			if (request.readyState === 4) {
-				document.getElementById(id).classList.remove('new');
-				document.getElementById(id).classList.add('completed');
-			}
-		}
-	});
-	return textSpan;
-}
-
-function removeItemFromDomById(id) {
-	document.getElementById(id).remove();
-}
-
-getAllItems();
-*/
