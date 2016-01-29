@@ -1,11 +1,11 @@
 'use strict';
 
-var meal = document.querySelector("#meal")
+var meal = document.querySelector("#meal");
 var calories = document.querySelector("#calories");
 var date = document.querySelector("#date");
 var button = document.querySelector("#post_item");
 var button2 = document.querySelector("#filter_meals");
-var container = document.querySelector("#calorie_numbers")
+var container = document.querySelector("#calorie_numbers");
 var container2 = document.querySelector("#sum_calories")
 
 //var url = 'http://localhost:3000/todos';
@@ -36,12 +36,14 @@ function getAllItems() {
 	    }
 	}
 }
-
 function addItemsToDom(response) {
+	var sum = 0;
 	var items = JSON.parse(response);
 	items.forEach(function(item) {
+		sum += item.calorie;
 		createDomItem(item);
 	});
+	container2.innerText = sum;
 }
 
 function createDomItem(item) {
